@@ -9,21 +9,45 @@ module "eks-managed-node-group" {
   subnet_ids         = module.vpc.private_subnets
   eks_managed_node_groups = {
     app_node_group = {
-      instance_types = ["t4g.small"]
+      instance_types = ["c7i-flex.large"]
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 1
       max_size       = 3
       desired_size   = 2
+      subnet_ids     = module.vpc.private_subnets
+      timeouts = {
+        create = "15m"
+        update = "15m"
+        delete = "20m"
+      }
     },
     runners_node_group = {
-      instance_types = ["t3.small"]
+      instance_types = ["c7i-flex.large"]
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 1
       max_size       = 3
       desired_size   = 2
+      subnet_ids     = module.vpc.private_subnets
     }
   }
+  addons = {
+    coredns = {}
+    eks-pod-identity-agent = {
+      before_compute = true
+    }
+    kube-proxy = {}
+    vpc-cni = {
+      before_compute = true
+    }
+  }
+
   enable_cluster_creator_admin_permissions = true
+  endpoint_private_access                  = true
   endpoint_public_access                   = true
-  tags                                     = var.tags
+  timeouts = {
+    create = "15m"
+    update = "15m"
+    delete = "20m"
+  }
+  tags = var.tags
 }
