@@ -6,5 +6,6 @@ resource "aws_db_instance" "rds" {
   instance_class              = "db.t4g.micro"
   manage_master_user_password = true
   username                    = "postgres"
+  skip_final_snapshot         = true
   tags                        = var.tags
 }
