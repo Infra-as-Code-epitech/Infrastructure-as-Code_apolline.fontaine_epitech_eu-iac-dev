@@ -18,7 +18,7 @@ provider "helm" {
 
 resource "helm_release" "github-runners" {
   name             = "github-runners-${var.env}"
-  repository       = "actions-runner-controller"
+  repository       = "https://actions-runner-controller.github.io/actions-runner-controller"
   chart            = "actions-runner-controller"
   version          = "0.23.7"
   create_namespace = true
