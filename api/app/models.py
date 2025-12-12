@@ -1,22 +1,14 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from database import Base
-from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
 
-class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(50), unique=True)
-    email = Column(String(50), unique=True)
-    password = Column(String(50))
-    admin = Column(Boolean)
-    
-    def __init__(self, email, username, password, is_admin):
-        self.username = username
-        self.email = email
-        self.password = password
-        self.admin = is_admin
-        
-    def __repr__(self):
-        return '<User %r>' % self.username
+Base = declarative_base()
 
+class Tasks(Base):
+    __tablename__ = 'Tasks'
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    completed = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
