@@ -1,0 +1,44 @@
+# --- Local .terraform directories ---
+# These contain the downloaded providers and modules.
+**/.terraform/*
+env.sh
+.terraform
+
+# --- State Files (CRITICAL) ---
+# Never commit state files. They often contain unencrypted secrets.
+*.tfstate
+*.tfstate.*
+
+# --- Sensitive Variable Files ---
+# Ignore files containing your actual secrets/values.
+*.tfvars
+*.tfvars.json
+
+# --- CLI Configuration ---
+# Local user configuration files.
+.terraformrc
+terraform.rc
+
+# --- Crash Logs ---
+crash.log
+crash.*.log
+
+# --- Override Files ---
+# Used for local debugging/overrides, should not be shared.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# --- Environment Variables ---
+.env
+.envrc
+
+# --- Editor/OS Junk ---
+.DS_Store
+.idea/
+.vscode/
+
+*.txt
+*.backup
+*.hcl
