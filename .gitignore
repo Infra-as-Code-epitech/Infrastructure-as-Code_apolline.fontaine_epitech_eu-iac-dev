@@ -1,3 +1,5 @@
+.env
+__pycache__
 # --- Local .terraform directories ---
 # These contain the downloaded providers and modules.
 **/.terraform/*
