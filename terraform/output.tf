@@ -27,3 +27,13 @@ output "region" {
   description = "AWS region"
   value       = var.region
 }
+
+output "helm_release_status" {
+  description = "Statut de la release Helm"
+  value       = helm_release.app.status
+}
+
+output "helm_release_version" {
+  description = "Version déployée de la release Helm"
+  value       = helm_release.app.version
+}

@@ -29,3 +29,27 @@ variable "tags" {
     Name        = "infraascode-vpc"
   }
 }
+
+variable "helm_release_name" {
+  description = "Nom de la release Helm"
+  type        = string
+  default     = "app"
+}
+
+variable "helm_chart_path" {
+  description = "Chemin vers le chart Helm (local ou distant)"
+  type        = string
+  default     = "../helm"
+}
+
+variable "helm_values_path" {
+  description = "Chemin vers le fichier values.yaml"
+  type        = string
+  default     = "../helm/values.yaml"
+}
+
+variable "kubernetes_app_namespace" {
+  description = "Namespace Kubernetes pour déployer l'application"
+  type        = string
+  default     = "app"
+}
