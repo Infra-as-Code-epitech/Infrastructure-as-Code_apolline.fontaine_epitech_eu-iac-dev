@@ -46,7 +46,7 @@ resource "helm_release" "app" {
   name      = var.helm_release_name
   chart     = var.helm_chart_path
   namespace = var.kubernetes_namespace
-  
+
   create_namespace = true
 
   values = [

@@ -13,7 +13,7 @@ terraform {
       version = "~> 2.0"
     }
   }
-  
+
   required_version = ">= 1.2"
 
   backend "s3" {
@@ -21,5 +21,5 @@ terraform {
     key    = "state/terraform.tfstate"
     region = ""
   }
-  
+
 }
