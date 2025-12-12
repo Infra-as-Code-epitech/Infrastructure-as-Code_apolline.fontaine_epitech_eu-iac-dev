@@ -30,12 +30,6 @@ variable "tags" {
   }
 }
 
-variable "cluster_name" {
-  description = "Nom du cluster EKS"
-  type        = string
-  default     = "my-cluster"
-}
-
 variable "helm_release_name" {
   description = "Nom de la release Helm"
   type        = string
@@ -54,9 +48,8 @@ variable "helm_values_path" {
   default     = "../helm/values.yaml"
 }
 
-variable "kubernetes_namespace" {
+variable "kubernetes_app_namespace" {
   description = "Namespace Kubernetes pour déployer l'application"
   type        = string
-  default     = "default"
+  default     = "app"
 }
-
