@@ -6,7 +6,7 @@ terraform {
     }
   }
 
-  required_version = ">= 1.2"
+  required_version = ">= 1.14"
 
   backend "s3" {
     bucket = ""
