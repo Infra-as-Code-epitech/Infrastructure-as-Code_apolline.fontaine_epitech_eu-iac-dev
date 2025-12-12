@@ -1,9 +1,8 @@
-.env
-__pycache__
 # --- Local .terraform directories ---
 # These contain the downloaded providers and modules.
 **/.terraform/*
 env.sh
+.terraform
 
 # --- State Files (CRITICAL) ---
 # Never commit state files. They often contain unencrypted secrets.
@@ -12,8 +11,8 @@ env.sh
 
 # --- Sensitive Variable Files ---
 # Ignore files containing your actual secrets/values.
-# *.tfvars
-# *.tfvars.json
+*.tfvars
+*.tfvars.json
 
 # --- CLI Configuration ---
 # Local user configuration files.
@@ -39,3 +38,7 @@ override.tf.json
 .DS_Store
 .idea/
 .vscode/
+
+*.txt
+*.backup
+*.hcl

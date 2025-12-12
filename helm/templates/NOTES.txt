@@ -1,0 +1,13 @@
+1. Get the application URL by running these commands:
+
+  NOTE: If ingress is disabled, get the service info:
+
+  kubectl get svc {{ include "api.fullname" . }}
+
+  If ingress is enabled, use the first host configured in `values.yaml` or run:
+
+  kubectl get ingress
+
+2. To uninstall the release:
+
+  helm uninstall <release-name>

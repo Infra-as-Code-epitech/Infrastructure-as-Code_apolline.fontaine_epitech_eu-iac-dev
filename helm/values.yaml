@@ -1,0 +1,39 @@
+replicaCount: 2
+
+image:
+  repository: infrastruscture-as-code/votre-api
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+env:
+  - name: DATABASE_URL
+    value: "postgresql://..."
+  - name: API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: api-secrets
+        key: api-key
+
+ingress:
+  enabled: false
+  hosts: []
+  tls: []
+
+resources: {}
+
+livenessProbe:
+  path: /health
+  port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  path: /ready
+  port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
