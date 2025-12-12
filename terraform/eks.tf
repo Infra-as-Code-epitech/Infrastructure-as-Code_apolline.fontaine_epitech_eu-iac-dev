@@ -7,6 +7,7 @@ module "eks-managed-node-group" {
   region             = var.region
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
+  # Maybe add names to nodes
   eks_managed_node_groups = {
     app_node_group = {
       instance_types = ["c7i-flex.large"]

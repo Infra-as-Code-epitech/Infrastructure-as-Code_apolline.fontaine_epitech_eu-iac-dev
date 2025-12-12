@@ -4,6 +4,11 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "env" {
+  description = "Environment name"
+  type        = string
+}
+
 variable "vpc_name" {
   description = "Name of the VPC"
   type        = string

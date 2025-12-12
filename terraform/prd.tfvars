@@ -4,3 +4,4 @@ tags = {
 }
 vpc_name = "vpc-prd"
 eks_name = "eks-prd"
+env      = "prd"
