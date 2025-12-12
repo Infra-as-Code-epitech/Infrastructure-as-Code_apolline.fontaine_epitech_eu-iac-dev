@@ -15,29 +15,3 @@ provider "helm" {
     token                  = data.aws_eks_cluster_auth.cluster.token
   }
 }
-
-resource "helm_release" "cert-manager" {
-  name             = "cert-manager-${var.env}"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  version          = "1.19.2"
-  create_namespace = true
-  namespace        = "cert-manager"
-
-  set = [{
-    name  = "crds.enabled"
-    value = true
-  }]
-}
-
-
-resource "helm_release" "github-runners" {
-  name             = "github-runners-${var.env}"
-  repository       = "https://actions-runner-controller.github.io/actions-runner-controller"
-  chart            = "actions-runner-controller"
-  version          = "0.23.7"
-  create_namespace = true
-  namespace        = "runners"
-
-  depends_on = [helm_release.cert-manager]
-}
