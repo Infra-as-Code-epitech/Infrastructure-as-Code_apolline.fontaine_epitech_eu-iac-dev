@@ -29,3 +29,8 @@ variable "tags" {
     Name        = "infraascode-vpc"
   }
 }
+
+variable "namespace" {
+  type    = string
+  default = "monitoring"
+}
