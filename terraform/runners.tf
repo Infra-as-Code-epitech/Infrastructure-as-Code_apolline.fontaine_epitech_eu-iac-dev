@@ -70,8 +70,10 @@ resource "helm_release" "arc_runner_scale_set" {
     }
   ]
 
-  set_sensitive = {
-    name  = "githubConfigSecret.github_app_private_key"
-    value = data.aws_secretsmanager_secret_version.github_app_key.secret_string
-  }
+  set_sensitive = [
+    {
+      name  = "githubConfigSecret.github_app_private_key"
+      value = data.aws_secretsmanager_secret_version.github_app_key.secret_string
+    }
+  ]
 }
