@@ -1,9 +1,9 @@
 output "vpc_id" {
   description = "The ID of the VPC"
-  value       = aws_vpc.main.id
+  value       = module.vpc.vpc_id
 }
 
 output "subnet_id" {
   description = "The ID of the Subnet"
-  value       = aws_subnet.subnet1.id
+  value       = module.vpc.public_subnets
 }

@@ -7,6 +7,7 @@ env.sh
 # Never commit state files. They often contain unencrypted secrets.
 *.tfstate
 *.tfstate.*
+*.lock.hcl
 
 # --- Sensitive Variable Files ---
 # Ignore files containing your actual secrets/values.
