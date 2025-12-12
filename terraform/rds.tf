@@ -1,4 +1,5 @@
 resource "aws_db_instance" "rds" {
+  region                      = var.region
   allocated_storage           = 20
   db_name                     = "mydb"
   engine                      = "postgres"
