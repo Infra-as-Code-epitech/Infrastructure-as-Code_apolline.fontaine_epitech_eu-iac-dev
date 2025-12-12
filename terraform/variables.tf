@@ -4,10 +4,21 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "env" {
+  description = "Environment name"
+  type        = string
+}
+
 variable "vpc_name" {
   description = "Name of the VPC"
   type        = string
   default     = "vpc"
+}
+
+variable "eks_name" {
+  description = "Name of the EKS cluster"
+  type        = string
+  default     = "eks"
 }
 
 variable "tags" {
@@ -15,6 +26,7 @@ variable "tags" {
   type        = map(string)
   default = {
     environment = "dev"
+    Name        = "infraascode-vpc"
   }
 }
 

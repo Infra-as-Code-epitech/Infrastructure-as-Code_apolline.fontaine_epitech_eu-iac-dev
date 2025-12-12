@@ -1,0 +1,1 @@
+The file /app/app/__pycache__/database.cpython-311.pyc is a compiled Python file and does not contain human-readable code. Therefore, it is intentionally left blank.
