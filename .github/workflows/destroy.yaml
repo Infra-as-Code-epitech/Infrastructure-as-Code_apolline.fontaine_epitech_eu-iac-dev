@@ -1,5 +1,5 @@
 name: Manual destroy
-run-name: ${{ github.actor }} run the workflow
+run-name: ${{ github.actor }} run the ${{ github.workflow }} workflow
 on:
   workflow_dispatch:
     inputs:
