@@ -23,7 +23,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@main
         with:
-          role-to-assume: "arn:aws:iam::075006646450:role/OICD-github-actions"
+          role-to-assume: "arn:aws:iam::075006646450:role/oidc-role"
           aws-region: "eu-west-1"
 
       - name: Check AWS Identity
