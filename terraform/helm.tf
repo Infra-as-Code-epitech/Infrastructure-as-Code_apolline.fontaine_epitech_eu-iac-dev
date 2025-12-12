@@ -55,7 +55,5 @@ resource "helm_release" "app" {
 
   wait    = true
   timeout = 300
-
-  depends_on = [data.aws_eks_cluster.main]
 }
 
