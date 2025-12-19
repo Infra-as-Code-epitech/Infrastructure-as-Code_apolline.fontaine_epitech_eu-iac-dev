@@ -13,8 +13,6 @@ permissions:
 jobs:
   terraform:
     runs-on: arc-runner-set
-    container:
-      image: hashicorp/terraform:1.14
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'prd' || 'dev' }}
     steps:
