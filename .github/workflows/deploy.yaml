@@ -16,7 +16,7 @@ jobs:
   #   steps:
   #     - run: echo "🎉 This job uses runner scale set runners!"
   terraform:
-    runs-on: arc-runner-set
+    runs-on: ubuntu-latest
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'prd' || 'dev' }}
     steps:
