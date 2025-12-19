@@ -9,15 +9,16 @@ resource "helm_release" "app" {
     file(var.helm_values_path)
   ]
 
-  set {
-    name  = "image.repository"
-    value = aws_ecr_repository.api.repository_url
-  }
-
-  set {
-    name  = "image.tag"
-    value = var.image_tag
-  }
+  set = [
+    {
+      name  = "image.repository"
+      value = aws_ecr_repository.api.repository_url
+    },
+    {
+      name  = "image.tag"
+      value = var.image_tag
+    }
+  ]
 
   wait            = true
   timeout         = 300
