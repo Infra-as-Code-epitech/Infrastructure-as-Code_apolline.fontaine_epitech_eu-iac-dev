@@ -1,5 +1,5 @@
 resource "helm_release" "app" {
-  name      = var.helm_release_name
+  name      = "${var.helm_release_name}-${var.env}"
   chart     = var.helm_chart_path
   namespace = var.kubernetes_app_namespace
 
