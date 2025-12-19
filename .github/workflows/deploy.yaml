@@ -11,6 +11,10 @@ permissions:
   contents: read
 
 jobs:
+  Explore-GitHub-Actions:
+    runs-on: arc-runner-set-${{ github.ref_name }}
+    steps:
+      - run: echo "🎉 This job uses runner scale set runners!"
   terraform:
     runs-on: ubuntu-latest
     env:
