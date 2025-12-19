@@ -12,11 +12,6 @@ resource "helm_release" "cert-manager" {
   }]
 }
 
-resource "aws_secretsmanager_secret" "github_app_key" {
-  name                           = "github-runners/app/key"
-  force_overwrite_replica_secret = true
-}
-
 data "aws_secretsmanager_secret" "github_app_key" {
   name = aws_secretsmanager_secret.github_app_key.name
 }
@@ -42,6 +37,7 @@ resource "helm_release" "arc_runner_scale_set" {
   version          = "0.13.0"
   namespace        = "runners"
   create_namespace = true
+  wait             = true
   depends_on       = [helm_release.arc_controller]
   set = [
     {
