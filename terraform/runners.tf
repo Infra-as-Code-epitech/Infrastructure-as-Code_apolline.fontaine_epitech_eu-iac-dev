@@ -12,13 +12,8 @@ resource "helm_release" "cert-manager" {
   }]
 }
 
-resource "aws_secretsmanager_secret" "github_app_key" {
-  name                           = "github-runners/app/key"
-  force_overwrite_replica_secret = true
-}
-
 data "aws_secretsmanager_secret" "github_app_key" {
-  name = aws_secretsmanager_secret.github_app_key.name
+  name = "github-runners/app/key"
 }
 
 data "aws_secretsmanager_secret_version" "github_app_key" {
@@ -32,6 +27,7 @@ resource "helm_release" "arc_controller" {
   version          = "0.13.0"
   namespace        = "runners"
   create_namespace = true
+  replace          = true
   wait             = true
 }
 
@@ -42,6 +38,8 @@ resource "helm_release" "arc_runner_scale_set" {
   version          = "0.13.0"
   namespace        = "runners"
   create_namespace = true
+  wait             = true
+  replace          = true
   depends_on       = [helm_release.arc_controller]
   set = [
     {
