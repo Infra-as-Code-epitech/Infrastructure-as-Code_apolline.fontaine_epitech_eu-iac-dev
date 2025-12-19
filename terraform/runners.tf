@@ -28,6 +28,7 @@ resource "helm_release" "arc_controller" {
   namespace        = "runners"
   create_namespace = true
   replace          = true
+  cleanup_on_fail  = true
   wait             = true
 }
 
@@ -40,6 +41,7 @@ resource "helm_release" "arc_runner_scale_set" {
   create_namespace = true
   wait             = true
   replace          = true
+  cleanup_on_fail  = true
   depends_on       = [helm_release.arc_controller]
   set = [
     {
