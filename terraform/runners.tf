@@ -13,7 +13,7 @@ resource "helm_release" "cert-manager" {
 }
 
 data "aws_secretsmanager_secret" "github_app_key" {
-  name = aws_secretsmanager_secret.github_app_key.name
+  name = "github-runners/app/key"
 }
 
 data "aws_secretsmanager_secret_version" "github_app_key" {
