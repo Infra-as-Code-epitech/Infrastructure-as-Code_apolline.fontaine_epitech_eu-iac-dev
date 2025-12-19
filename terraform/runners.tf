@@ -21,7 +21,7 @@ data "aws_secretsmanager_secret_version" "github_app_key" {
 }
 
 resource "helm_release" "arc_controller" {
-  name             = "arc-${var.env}"
+  name             = "arc"
   repository       = "oci://ghcr.io/actions/actions-runner-controller-charts"
   chart            = "gha-runner-scale-set-controller"
   version          = "0.13.0"
@@ -33,7 +33,7 @@ resource "helm_release" "arc_controller" {
 }
 
 resource "helm_release" "arc_runner_scale_set" {
-  name             = "arc-runner-set-${var.env}"
+  name             = "arc-runner-set"
   repository       = "oci://ghcr.io/actions/actions-runner-controller-charts"
   chart            = "gha-runner-scale-set"
   version          = "0.13.0"
