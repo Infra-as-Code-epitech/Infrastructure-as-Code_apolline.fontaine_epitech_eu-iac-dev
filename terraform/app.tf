@@ -4,6 +4,7 @@ resource "helm_release" "app" {
   namespace = var.kubernetes_app_namespace
 
   create_namespace = true
+  upgrade_install  = true
 
   values = [
     file(var.helm_values_path)
@@ -26,7 +27,6 @@ resource "helm_release" "app" {
   atomic          = false
   cleanup_on_fail = true
   force_update    = true
-  version         = "0.1.0"
   reuse_values    = true
 
   depends_on = [
