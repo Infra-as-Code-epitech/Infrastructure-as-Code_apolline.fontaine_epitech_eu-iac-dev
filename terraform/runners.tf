@@ -47,7 +47,7 @@ resource "helm_release" "arc_runner_scale_set" {
   set = [
     {
       name  = "githubConfigUrl"
-      value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev.git"
+      value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev"
     },
     {
       name  = "minRunners"
