@@ -13,6 +13,8 @@ resource "helm_release" "app" {
   timeout       = 900
   wait_for_jobs = true
   atomic        = false
+  cleanup_on_fail = true
+  force_update = true
 
   depends_on = [
     data.aws_eks_cluster.cluster,
