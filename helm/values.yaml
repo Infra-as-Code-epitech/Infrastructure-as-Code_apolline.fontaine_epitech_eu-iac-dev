@@ -10,6 +10,14 @@ service:
   port: 80
   targetPort: 8080
 
+loadBalancer:
+  name : task-manager
+  enabled: true
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+  annotations: {}
+
 env:
   - name: DATABASE_URL
     value: "postgresql://..."
