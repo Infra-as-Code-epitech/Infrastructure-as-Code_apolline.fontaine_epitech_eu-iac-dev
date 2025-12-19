@@ -27,7 +27,7 @@ resource "helm_release" "arc_controller" {
   version          = "0.13.0"
   namespace        = "runners"
   create_namespace = true
-  replace          = true
+  atomic           = true
   cleanup_on_fail  = true
   wait             = true
 }
@@ -40,13 +40,14 @@ resource "helm_release" "arc_runner_scale_set" {
   namespace        = "runners"
   create_namespace = true
   wait             = true
-  replace          = true
+  atomic           = true
   cleanup_on_fail  = true
+  timeout          = 300
   depends_on       = [helm_release.arc_controller]
   set = [
     {
       name  = "githubConfigUrl"
-      value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev.git"
+      value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev"
     },
     {
       name  = "minRunners"
