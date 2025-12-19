@@ -1,6 +1,6 @@
 locals {
   admin_users = [
-    "arn:aws:iam::075006646450:user/Apolline",
+    # "arn:aws:iam::075006646450:user/Apolline",
     "arn:aws:iam::075006646450:user/Theo",
     "arn:aws:iam::075006646450:user/Clement",
     "arn:aws:iam::075006646450:user/jeremie",
@@ -8,6 +8,23 @@ locals {
     "arn:aws:iam::075006646450:user/terraform"
   ]
 }
+
+resource "aws_eks_access_entry" "apolline" {
+  cluster_name  = module.eks-managed-node-group.cluster_name
+  principal_arn = "arn:aws:iam::075006646450:user/Apolline"
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "admin_policy" {
+  cluster_name  = module.eks-managed-node-group.cluster_name
+  principal_arn = "arn:aws:iam::075006646450:user/Apolline"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  access_scope {
+    type = "cluster"
+  }
+  depends_on = [aws_eks_access_entry.apolline]
+}
+
 
 resource "aws_eks_access_entry" "admins" {
   for_each = toset(local.admin_users)
@@ -18,10 +35,10 @@ resource "aws_eks_access_entry" "admins" {
 }
 
 resource "aws_eks_access_policy_association" "admin_policy" {
-  for_each = toset(local.admin_users)
+  for_each = aws_eks_access_entry.admins
 
   cluster_name  = module.eks-managed-node-group.cluster_name
-  principal_arn = each.value
+  principal_arn = each.value.principal_arn
 
   policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
