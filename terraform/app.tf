@@ -9,10 +9,11 @@ resource "helm_release" "app" {
     file(var.helm_values_path)
   ]
 
-  wait          = true
-  timeout       = 900
-  wait_for_jobs = true
-  atomic        = false
+  wait            = true
+  timeout         = 900
+  wait_for_jobs   = true
+  atomic          = false
+  cleanup_on_fail = true
 
   depends_on = [
     data.aws_eks_cluster.cluster,
