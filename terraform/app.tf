@@ -9,6 +9,7 @@ resource "helm_release" "app" {
     file(var.helm_values_path)
   ]
 
+  replace = true
   wait    = true
   timeout = 300
 }
