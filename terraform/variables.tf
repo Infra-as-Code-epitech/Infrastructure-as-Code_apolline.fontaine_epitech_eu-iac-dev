@@ -53,3 +53,15 @@ variable "kubernetes_app_namespace" {
   type        = string
   default     = "app"
 }
+
+variable "environment" {
+  description = "Environnement de déploiement"
+  type        = string
+  default     = "dev"
+}
+
+variable "image_tag" {
+  description = "Tag de l'image Docker à déployer"
+  type        = string
+  default     = "latest"
+}

@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   terraform:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'prd' || 'dev' }}
     steps:
@@ -26,6 +26,14 @@ jobs:
           aws-region: "eu-west-1"
       - name: Check AWS Identity
         run: aws sts get-caller-identity
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Setup Terraform

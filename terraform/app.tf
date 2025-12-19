@@ -9,6 +9,16 @@ resource "helm_release" "app" {
     file(var.helm_values_path)
   ]
 
+  set {
+    name  = "image.repository"
+    value = aws_ecr_repository.api.repository_url
+  }
+
+  set {
+    name  = "image.tag"
+    value = var.image_tag
+  }
+
   wait            = true
   timeout         = 300
   wait_for_jobs   = true
@@ -20,6 +30,7 @@ resource "helm_release" "app" {
 
   depends_on = [
     data.aws_eks_cluster.cluster,
-    data.aws_eks_cluster_auth.cluster
+    data.aws_eks_cluster_auth.cluster,
+    null_resource.docker_build_push
   ]
 }
