@@ -7,7 +7,7 @@ module "eks-managed-node-group" {
   region             = var.region
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
-  # Maybe add names to nodes
+
   eks_managed_node_groups = {
     app_node_group = {
       instance_types = ["t3.small"]
@@ -21,14 +21,20 @@ module "eks-managed-node-group" {
         update = "15m"
         delete = "20m"
       }
+      iam_role_additional_policies = {
+        AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      }
     },
     runners_node_group = {
-      instance_types = ["c7i-flex.large"]
+      instance_types = ["t3.small"]
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 1
       max_size       = 3
       desired_size   = 2
       subnet_ids     = module.vpc.private_subnets
+      iam_role_additional_policies = {
+        AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      }
     }
   }
   addons = {

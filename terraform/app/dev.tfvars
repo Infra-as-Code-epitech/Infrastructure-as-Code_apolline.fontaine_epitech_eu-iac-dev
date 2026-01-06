@@ -1,9 +1,4 @@
-region = "eu-west-1"
-tags = {
-  "environment" = "dev"
-}
-vpc_name          = "vpc-dev"
-eks_name          = "eks-dev"
+region            = "eu-west-1"
 env               = "dev"
 helm_release_name = "app-dev"
 helm_chart_path   = "../helm"

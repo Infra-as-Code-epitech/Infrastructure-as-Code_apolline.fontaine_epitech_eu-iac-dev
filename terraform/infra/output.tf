@@ -18,6 +18,10 @@ output "eks_name" {
   value       = module.eks-managed-node-group.cluster_name
 }
 
+output "cluster_certificate_authority_data" {
+  value = module.eks-managed-node-group.cluster_certificate_authority_data
+}
+
 output "eks_security_group_id" {
   description = "Security group ids attached to the EKS cluster control plane"
   value       = module.eks-managed-node-group.cluster_security_group_id
@@ -28,12 +32,7 @@ output "region" {
   value       = var.region
 }
 
-# output "helm_release_status" {
-#   description = "Statut de la release Helm"
-#   value       = helm_release.app.status
-# }
-
-# output "helm_release_version" {
-#   description = "Version déployée de la release Helm"
-#   value       = helm_release.app.version
-# }
+output "ecr_repository_url" {
+  description = "URL du repository ECR"
+  value       = aws_ecr_repository.api.repository_url
+}

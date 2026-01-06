@@ -43,8 +43,16 @@ resource "helm_release" "arc_runner_scale_set" {
   atomic           = true
   cleanup_on_fail  = true
   timeout          = 300
-  depends_on       = [helm_release.arc_controller]
+  depends_on       = [helm_release.arc_controller, aws_ecr_repository.infra]
   set = [
+    {
+      name  = "image.repository"
+      value = aws_ecr_repository.infra.repository_url
+    },
+    {
+      name  = "image.tag"
+      value = "latest"
+    },
     {
       name  = "githubConfigUrl"
       value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev"

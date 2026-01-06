@@ -8,7 +8,7 @@ resource "aws_ecr_repository" "api" {
 
   tags = {
     Name        = "task-manager-api"
-    Environment = var.environment
+    Environment = var.env
   }
 }
 
@@ -54,7 +54,3 @@ resource "null_resource" "docker_build_push" {
   depends_on = [aws_ecr_repository.api]
 }
 
-output "ecr_repository_url" {
-  description = "URL du repository ECR"
-  value       = aws_ecr_repository.api.repository_url
-}
