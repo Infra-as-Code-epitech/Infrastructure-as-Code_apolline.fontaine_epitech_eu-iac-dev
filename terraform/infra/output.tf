@@ -31,8 +31,3 @@ output "region" {
   description = "AWS region"
   value       = var.region
 }
-
-output "ecr_repository_url" {
-  description = "URL du repository ECR"
-  value       = aws_ecr_repository.api.repository_url
-}
