@@ -46,12 +46,16 @@ resource "helm_release" "arc_runner_scale_set" {
   depends_on       = [helm_release.arc_controller, aws_ecr_repository.infra]
   set = [
     {
-      name  = "image.repository"
-      value = aws_ecr_repository.infra.repository_url
+      name  = "template.spec.containers[0].image"
+      value = "${aws_ecr_repository.infra.repository_url}:latest"
     },
     {
-      name  = "image.tag"
-      value = "latest"
+      name  = "template.spec.containers[0].imagePullPolicy"
+      value = "Always"
+    },
+    {
+      name  = "template.spec.containers[0].command[0]"
+      value = "/home/runner/run.sh"
     },
     {
       name  = "githubConfigUrl"
