@@ -67,7 +67,7 @@ jobs:
   app:
     name: Deploy app
     needs: infra
-    runs-on: [arc-runner-set, ubuntu-latest]
+    runs-on: [ubuntu-latest]
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'prd' || 'dev' }}
     steps:

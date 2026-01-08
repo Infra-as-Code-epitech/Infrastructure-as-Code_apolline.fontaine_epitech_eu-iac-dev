@@ -46,18 +46,6 @@ resource "helm_release" "arc_runner_scale_set" {
   depends_on       = [helm_release.arc_controller, aws_ecr_repository.infra]
   set = [
     {
-      name  = "template.spec.containers[0].image"
-      value = "${aws_ecr_repository.infra.repository_url}:latest"
-    },
-    {
-      name  = "template.spec.containers[0].imagePullPolicy"
-      value = "Always"
-    },
-    {
-      name  = "template.spec.containers[0].command[0]"
-      value = "/home/runner/run.sh"
-    },
-    {
       name  = "githubConfigUrl"
       value = "https://github.com/Infra-as-Code-epitech/Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev"
     },
