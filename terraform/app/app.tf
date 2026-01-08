@@ -30,8 +30,6 @@ resource "helm_release" "app" {
   reuse_values    = true
 
   depends_on = [
-    data.aws_eks_cluster.cluster,
-    data.aws_eks_cluster_auth.cluster,
     null_resource.docker_build_push
   ]
 }
