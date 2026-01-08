@@ -9,6 +9,11 @@ variable "env" {
   type        = string
 }
 
+variable "bucket_name" {
+  description = "Infra bucket name"
+  type        = string
+}
+
 variable "helm_release_name" {
   description = "Nom de la release Helm"
   type        = string

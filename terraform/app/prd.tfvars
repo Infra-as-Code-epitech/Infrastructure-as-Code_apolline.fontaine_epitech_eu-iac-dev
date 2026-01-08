@@ -1,5 +1,6 @@
 region            = "eu-west-1"
 env               = "prd"
+bucket_name       = "terraform-infraascode-bucket-prd"
 helm_release_name = "app"
 helm_chart_path   = "../helm"
 helm_values_path  = "../helm/values.yaml"
