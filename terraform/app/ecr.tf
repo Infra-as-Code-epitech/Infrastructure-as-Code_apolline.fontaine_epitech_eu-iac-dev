@@ -35,7 +35,7 @@ resource "aws_ecr_lifecycle_policy" "api" {
 
 resource "null_resource" "docker_build_push" {
   triggers = {
-    dockerfile_hash = filemd5("${path.module}/../api/Dockerfile")
+    dockerfile_hash = filemd5("${path.module}/../../api/Dockerfile")
   }
 
   provisioner "local-exec" {
