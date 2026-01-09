@@ -24,3 +24,15 @@ app.include_router(todo_router)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Todo List API!"}
+
+
+@app.get("/health")
+def health_check():
+    """Liveness probe - vérifie que l'app tourne"""
+    return {"status": "healthy"}
+
+
+@app.get("/ready")
+def readiness_check():
+    """Readiness probe - vérifie que l'app est prête à recevoir du trafic"""
+    return {"status": "ready"}
