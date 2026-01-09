@@ -32,6 +32,7 @@ resource "helm_release" "app" {
   depends_on = [
     data.aws_eks_cluster.cluster,
     data.aws_eks_cluster_auth.cluster,
-    null_resource.docker_build_push
+    null_resource.docker_build_push,
+    kubernetes_secret.db_credentials
   ]
 }
