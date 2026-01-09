@@ -26,10 +26,11 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.rds.id
-  from_port         = 5432
-  ip_protocol       = "tcp"
-  to_port           = 5432
+  security_group_id            = aws_security_group.rds.id
+  from_port                    = 5432
+  ip_protocol                  = "tcp"
+  to_port                      = 5432
+  referenced_security_group_id = module.eks-managed-node-group.node_security_group_id
 }
 
 resource "aws_db_instance" "rds" {
