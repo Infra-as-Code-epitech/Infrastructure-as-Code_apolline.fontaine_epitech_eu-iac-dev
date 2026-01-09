@@ -23,7 +23,7 @@ data "aws_secretsmanager_secret_version" "rds_password" {
 resource "kubernetes_secret" "db_credentials" {
   metadata {
     name      = "db-credentials"
-    namespace = var.kubernetes_app_namespace
+    namespace = "app"
   }
 
   data = {
