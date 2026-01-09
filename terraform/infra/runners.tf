@@ -43,7 +43,7 @@ resource "helm_release" "arc_runner_scale_set" {
   atomic           = true
   cleanup_on_fail  = true
   timeout          = 300
-  depends_on       = [helm_release.arc_controller]
+  depends_on       = [helm_release.arc_controller, aws_ecr_repository.infra]
   set = [
     {
       name  = "githubConfigUrl"

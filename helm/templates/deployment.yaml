@@ -21,8 +21,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          env:
-{{ toYaml .Values.env | nindent 12 }}
           readinessProbe:
             httpGet:
               path: {{ .Values.readinessProbe.path }}

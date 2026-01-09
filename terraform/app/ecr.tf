@@ -8,7 +8,7 @@ resource "aws_ecr_repository" "api" {
 
   tags = {
     Name        = "task-manager-api"
-    Environment = var.environment
+    Environment = var.env
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_ecr_lifecycle_policy" "api" {
 
 resource "null_resource" "docker_build_push" {
   triggers = {
-    dockerfile_hash = filemd5("${path.module}/../api/Dockerfile")
+    dockerfile_hash = filemd5("${path.module}/../../api/Dockerfile")
   }
 
   provisioner "local-exec" {
@@ -44,7 +44,7 @@ resource "null_resource" "docker_build_push" {
       aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${aws_ecr_repository.api.repository_url}
       
       # Build l'image
-      docker build -t ${aws_ecr_repository.api.repository_url}:${var.image_tag} ${path.module}/../api
+      docker build -t ${aws_ecr_repository.api.repository_url}:${var.image_tag} ${path.module}/../../api
       
       # Push l'image
       docker push ${aws_ecr_repository.api.repository_url}:${var.image_tag}
@@ -54,7 +54,3 @@ resource "null_resource" "docker_build_push" {
   depends_on = [aws_ecr_repository.api]
 }
 
-output "ecr_repository_url" {
-  description = "URL du repository ECR"
-  value       = aws_ecr_repository.api.repository_url
-}
