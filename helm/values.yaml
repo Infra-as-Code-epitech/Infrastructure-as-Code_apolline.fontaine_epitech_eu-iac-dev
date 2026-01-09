@@ -25,6 +25,11 @@ env:
         name: db-credentials
         key: DATABASE_URL
 
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "app-sa"
+
 ingress:
   enabled: false
   hosts: []
