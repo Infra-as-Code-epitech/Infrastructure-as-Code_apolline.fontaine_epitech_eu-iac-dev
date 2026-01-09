@@ -26,4 +26,16 @@ resource "aws_db_instance" "rds" {
   username                            = "postgres"
   skip_final_snapshot                 = true
   tags                                = var.tags
+
+  performance_insights_enabled = true
+  performance_insights_retention_period = 7
+
+  monitoring_interval = 60
+  monitoring_role_arn = aws_iam_role.rds_monitoring.arn
+
+  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+
+  vpc_security_group_ids = [aws_security_group.rds.id]
+  db_subnet_group_name = aws_db_subnet_group.rds.name
+  skip_final_snapshot = true
 }
