@@ -18,6 +18,10 @@ resource "helm_release" "app" {
     {
       name  = "image.tag"
       value = var.image_tag
+    },
+    {
+      name  = "serviceAccount.name"
+      value = "task-manager"
     }
   ]
 

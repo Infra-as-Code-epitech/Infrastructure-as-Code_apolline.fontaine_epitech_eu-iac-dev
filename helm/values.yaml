@@ -18,15 +18,6 @@ loadBalancer:
   targetPort: 8000
   annotations: {}
 
-env:
-  - name: DATABASE_URL
-    value: "postgresql://..."
-  # - name: API_KEY
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: api-secrets
-  #       key: api-key
-
 ingress:
   enabled: false
   hosts: []
