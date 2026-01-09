@@ -19,10 +19,10 @@ resource "helm_release" "app" {
       name  = "image.tag"
       value = var.image_tag
     },
-    {
-      name  = "serviceAccount.name"
-      value = "task-manager"
-    }
+    # {
+    #   name  = "serviceAccount.name"
+    #   value = "task-manager"
+    # }
   ]
 
   wait            = true
@@ -34,6 +34,9 @@ resource "helm_release" "app" {
   reuse_values    = true
 
   depends_on = [
-    null_resource.docker_build_push
+    data.aws_eks_cluster.cluster,
+    data.aws_eks_cluster_auth.cluster,
+    null_resource.docker_build_push,
+    kubernetes_secret.db_credentials
   ]
 }
