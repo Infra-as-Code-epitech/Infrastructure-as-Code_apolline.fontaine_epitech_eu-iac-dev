@@ -67,12 +67,13 @@ jobs:
   app:
     name: Deploy app
     needs: infra
-    runs-on: ubuntu-latest
-    # container:
-    #   image: 075006646450.dkr.ecr.eu-west-1.amazonaws.com/github-runners:latest
-    #   credentials:
-    #     username: AWS
-    #     password: ${{ secrets.ECR_PASSWORD }}
+    # runs-on: ubuntu-latest
+    runs-on: arc-runner-set
+    container:
+      image: 075006646450.dkr.ecr.eu-west-1.amazonaws.com/github-runners:latest
+      credentials:
+        username: AWS
+        password: ${{ secrets.ECR_PASSWORD }}
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'prd' || 'dev' }}
     steps:
