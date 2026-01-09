@@ -1,0 +1,26 @@
+name: Update ECR PW
+
+on:
+  schedule:
+    - cron: 02 */11 * * *
+  workflow_dispatch:
+
+jobs:
+  update-ecr-pw:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      GH_TOKEN: ${{ secrets.GH_CLI }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          role-to-assume: "arn:aws:iam::075006646450:role/oidc-role"
+          aws-region: "eu-west-1"
+      - name: Get pw and update secret
+        run: |
+          export ECR_PW=`aws ecr get-login-password --region eu-west-1 --output text`
+          gh secret set ECR_PASSWORD --org Infra-as-Code-epitech --repos Infrastructure-as-Code_apolline.fontaine_epitech_eu-iac-dev --body "$ECR_PW"
