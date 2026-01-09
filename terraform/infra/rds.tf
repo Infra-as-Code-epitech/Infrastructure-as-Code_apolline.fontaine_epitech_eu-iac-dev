@@ -41,7 +41,6 @@ resource "aws_db_instance" "rds" {
   engine_version                      = "17.6"
   instance_class                      = "db.t4g.micro"
   db_subnet_group_name                = aws_db_subnet_group.rds.name
-  vpc_security_group_ids              = module.vpc.default_security_group_id
   manage_master_user_password         = true
   iam_database_authentication_enabled = true
   apply_immediately                   = true
