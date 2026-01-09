@@ -44,7 +44,7 @@ resource "aws_iam_policy" "read_config" {
       Action = "secretsmanager:GetSecretValue"
       Resource = [
         aws_secretsmanager_secret.app_config.arn,
-        aws_db_instance.rds.master_user_secret.secret_arn
+        aws_db_instance.rds.master_user_secret[0].secret_arn
       ]
     }]
   })
