@@ -7,7 +7,7 @@ data "aws_secretsmanager_secret_version" "db_config" {
 }
 
 data "aws_secretsmanager_secret" "rds_password" {
-  name = data.terraform_remote_state.infra.outputs.rds_master_secret_name
+  arn = data.terraform_remote_state.infra.outputs.rds_master_secret_name
 }
 
 data "aws_secretsmanager_secret_version" "rds_password" {
