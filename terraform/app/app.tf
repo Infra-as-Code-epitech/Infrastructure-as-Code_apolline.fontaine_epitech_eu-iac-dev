@@ -34,7 +34,7 @@ resource "helm_release" "app" {
   reuse_values    = true
 
   depends_on = [
-    data.aws_eks_cluster.cluster,
+    data.terraform_remote_state.infra,
     data.aws_eks_cluster_auth.cluster,
     null_resource.docker_build_push,
     kubernetes_secret.db_credentials
