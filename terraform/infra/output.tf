@@ -31,3 +31,8 @@ output "region" {
   description = "AWS region"
   value       = var.region
 }
+
+output "rds_master_secret_name" {
+  description = "Name of the RDS master password secret in AWS Secrets Manager"
+  value       = aws_db_instance.rds.master_user_secret[0].secret_arn
+}
