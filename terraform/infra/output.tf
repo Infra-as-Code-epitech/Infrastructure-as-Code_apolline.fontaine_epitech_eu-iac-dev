@@ -32,6 +32,10 @@ output "region" {
   value       = var.region
 }
 
+output "amp_endpoint" {
+  value = aws_prometheus_workspace.main.prometheus_endpoint
+}
+
 output "rds_master_secret_name" {
   description = "Name of the RDS master password secret in AWS Secrets Manager"
   value       = aws_db_instance.rds.master_user_secret[0].secret_arn

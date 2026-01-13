@@ -30,8 +30,8 @@ resource "aws_iam_policy" "rds_connect" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "eks_pod_identity_attachment" {
-  role       = aws_iam_role.eks_pod_identity.name
+resource "aws_iam_role_policy_attachment" "rds_connect_attachment" {
+  role       = aws_iam_role.eks_pod_identity_app.name
   policy_arn = aws_iam_policy.rds_connect.arn
 }
 
@@ -51,20 +51,61 @@ resource "aws_iam_policy" "read_config" {
 }
 
 resource "aws_iam_role_policy_attachment" "read_config_attachment" {
-  role       = aws_iam_role.eks_pod_identity.name
+  role       = aws_iam_role.eks_pod_identity_app.name
   policy_arn = aws_iam_policy.read_config.arn
 }
 
-resource "aws_iam_role" "eks_pod_identity" {
-  name               = "eks-pod-identity-example"
+resource "aws_iam_role" "eks_pod_identity_app" {
+  name               = "eks-pod-identity-app"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-resource "aws_eks_pod_identity_association" "example" {
+resource "aws_eks_pod_identity_association" "pod_identity_association_app" {
   cluster_name    = module.eks-managed-node-group.cluster_name
   namespace       = "app"
   service_account = "app-sa"
-  role_arn        = aws_iam_role.eks_pod_identity.arn
+  role_arn        = aws_iam_role.eks_pod_identity_app.arn
+}
+
+# ------------------------------------------------------------------
+
+resource "aws_prometheus_workspace" "main" {
+  alias = "eks-observability"
+}
+
+resource "aws_iam_policy" "adot_collector" {
+  name = "adot-collector-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "aps:RemoteWrite", "aps:GetSeries", "aps:GetLabels", "aps:GetMetricMetadata",
+          "xray:PutTraceSegments", "xray:PutTelemetryRecords", "xray:GetSamplingRules",
+          "logs:PutLogEvents", "logs:CreateLogGroup", "logs:CreateLogStream", "logs:DescribeLogStreams"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "adot_collector_attachment" {
+  role       = aws_iam_role.eks_pod_identity_observability.name
+  policy_arn = aws_iam_policy.adot_collector.arn
+}
+
+resource "aws_iam_role" "eks_pod_identity_observability" {
+  name               = "eks-pod-identity-observability"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_eks_pod_identity_association" "pod_identity_association_observability" {
+  cluster_name    = module.eks-managed-node-group.cluster_name
+  namespace       = "observability"
+  service_account = "observability-sa"
+  role_arn        = aws_iam_role.eks_pod_identity_observability.arn
 }
 
 module "eks-managed-node-group" {
@@ -114,6 +155,9 @@ module "eks-managed-node-group" {
     kube-proxy = {}
     vpc-cni = {
       before_compute = true
+    }
+    adot = {
+      most_recent = true
     }
   }
 

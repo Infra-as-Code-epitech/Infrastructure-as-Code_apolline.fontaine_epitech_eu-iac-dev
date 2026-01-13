@@ -63,4 +63,7 @@ resource "aws_db_instance" "rds" {
   username                            = "postgres"
   skip_final_snapshot                 = true
   tags                                = var.tags
+  enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade", "iam-db-auth-error"]
+  vpc_security_group_ids              = [aws_security_group.rds.id]
+  db_subnet_group_name                = aws_db_subnet_group.rds.name
 }

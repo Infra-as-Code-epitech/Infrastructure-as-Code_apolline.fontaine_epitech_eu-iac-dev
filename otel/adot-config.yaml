@@ -1,0 +1,56 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"
+      http:
+        endpoint: "0.0.0.0:4318"
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: "otel-collector-internal"
+          scrape_interval: "15s"
+          static_configs:
+            - targets: ["0.0.0.0:8888"]
+
+processors:
+  batch: {}
+  memory_limiter:
+    limit_mib: 400
+    spike_limit_mib: 100
+    check_interval: "5s"
+
+exporters:
+  prometheusremotewrite:
+    endpoint: "${amp_endpoint}api/v1/remote_write"
+    auth:
+      authenticator: "sigv4auth"
+
+  awsxray:
+    region: "${region}"
+
+  awscloudwatchlogs:
+    log_group_name: "/aws/eks/adot-logs"
+    log_stream_name: "collector"
+    region: "${region}"
+
+extensions:
+  sigv4auth:
+    region: "${region}"
+    service: "aps"
+
+service:
+  extensions: ["sigv4auth"]
+  pipelines:
+    metrics:
+      receivers: ["otlp", "prometheus"]
+      processors: ["memory_limiter", "batch"]
+      exporters: ["prometheusremotewrite"]
+    traces:
+      receivers: ["otlp"]
+      processors: ["memory_limiter", "batch"]
+      exporters: ["awsxray"]
+    logs:
+      receivers: ["otlp"]
+      processors: ["memory_limiter", "batch"]
+      exporters: ["awscloudwatchlogs"]
