@@ -31,3 +31,7 @@ output "region" {
   description = "AWS region"
   value       = var.region
 }
+
+output "amp_endpoint" {
+  value = aws_prometheus_workspace.main.prometheus_endpoint
+}
