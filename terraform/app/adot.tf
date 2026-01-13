@@ -6,7 +6,7 @@ resource "kubernetes_namespace_v1" "observability" {
 
 resource "kubernetes_service_account_v1" "adot" {
   metadata {
-    name      = "adot-collector"
+    name      = "observability-sa"
     namespace = "observability"
   }
   depends_on = [kubernetes_namespace_v1.observability]
@@ -22,7 +22,7 @@ resource "kubernetes_manifest" "adot_collector" {
     }
     spec = {
       mode           = "daemonset"
-      serviceAccount = "adot-collector"
+      serviceAccount = "observability-sa"
       config = templatefile("${path.module}/../../otel/adot-config.yaml", {
         amp_endpoint = data.terraform_remote_state.infra.outputs.amp_endpoint
         region       = var.region
