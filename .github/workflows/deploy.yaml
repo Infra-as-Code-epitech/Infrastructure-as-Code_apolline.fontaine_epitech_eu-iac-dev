@@ -76,7 +76,7 @@ jobs:
     runs-on: arc-runner-set
     services:
       internal-service:
-        image: ${{ needs.infra.outputs.registry }}/my-ecr-repo:latest
+        image: ${{ needs.infra.outputs.registry }}/github-runners:latest
         credentials:
           username: ${{ needs.infra.outputs.docker_username }}
           password: ${{ needs.infra.outputs.docker_password }}
