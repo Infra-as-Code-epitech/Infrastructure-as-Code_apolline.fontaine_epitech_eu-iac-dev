@@ -123,8 +123,8 @@ module "eks-managed-node-group" {
       instance_types = ["t3.small"]
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 1
-      max_size       = 3
-      desired_size   = 2
+      max_size       = 5
+      desired_size   = 1
       subnet_ids     = module.vpc.private_subnets
       timeouts = {
         create = "15m"
@@ -139,8 +139,8 @@ module "eks-managed-node-group" {
       instance_types = ["t3.small"]
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 1
-      max_size       = 3
-      desired_size   = 2
+      max_size       = 5
+      desired_size   = 1
       subnet_ids     = module.vpc.private_subnets
       iam_role_additional_policies = {
         AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"

@@ -17,23 +17,14 @@ spec:
       annotations:
         instrumentation.opentelemetry.io/inject-python: "true"
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
         - name: {{ include "api.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.readinessProbe.path }}
-              port: {{ .Values.readinessProbe.port }}
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.livenessProbe.path }}
-              port: {{ .Values.livenessProbe.port }}
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          env:
+{{- toYaml .Values.env | nindent 12 }}
           resources:
-{{ toYaml .Values.resources | nindent 12 }}
+{{- toYaml .Values.resources | nindent 12 }}

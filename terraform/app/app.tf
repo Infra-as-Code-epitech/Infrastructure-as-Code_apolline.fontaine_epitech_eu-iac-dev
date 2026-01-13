@@ -21,7 +21,7 @@ resource "helm_release" "app" {
     },
     {
       name  = "serviceAccount.name"
-      value = "task-manager"
+      value = "app-sa"
     }
   ]
 
@@ -34,6 +34,9 @@ resource "helm_release" "app" {
   reuse_values    = true
 
   depends_on = [
-    null_resource.docker_build_push
+    data.terraform_remote_state.infra,
+    data.aws_eks_cluster_auth.cluster,
+    null_resource.docker_build_push,
+    kubernetes_secret.db_credentials
   ]
 }
