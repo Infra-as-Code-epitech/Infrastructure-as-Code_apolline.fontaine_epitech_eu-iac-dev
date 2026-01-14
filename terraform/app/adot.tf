@@ -13,6 +13,7 @@ resource "kubernetes_service_account_v1" "adot" {
 }
 
 resource "kubernetes_manifest" "adot_collector" {
+  computed_fields = ["spec.config"]
   manifest = {
     apiVersion = "opentelemetry.io/v1alpha1"
     kind       = "OpenTelemetryCollector"
