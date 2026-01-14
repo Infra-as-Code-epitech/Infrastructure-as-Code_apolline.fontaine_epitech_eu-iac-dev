@@ -12,6 +12,45 @@ resource "kubernetes_service_account_v1" "adot" {
   depends_on = [kubernetes_namespace_v1.observability]
 }
 
+resource "kubernetes_cluster_role_v1" "adot_permissions" {
+  metadata {
+    name = "adot-collector-role"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["pods", "nodes", "namespaces", "configmaps"]
+    verbs      = ["get", "list", "watch"]
+  }
+  rule {
+    api_groups = [""]
+    resources  = ["nodes/stats", "nodes/proxy"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  depends_on = [kubernetes_service_account_v1.adot]
+}
+
+resource "kubernetes_cluster_role_binding_v1" "adot_binding" {
+  metadata {
+    name = "adot-collector-binding"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role_v1.adot_permissions.metadata[0].name
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = "observability-sa"
+    namespace = "observability"
+  }
+
+  depends_on = [kubernetes_service_account_v1.adot]
+}
+
 resource "kubernetes_manifest" "adot_collector" {
   computed_fields = ["spec.config"]
   manifest = {
