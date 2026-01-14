@@ -5,6 +5,7 @@ set -euo pipefail
 # Requirements: python, curl, uvicorn (or run the app separately and set BASE)
 # Usage: bash test_routes.sh
 
+# BASE must be set to LoadBalancer endpoint
 BASE="http://127.0.0.1:8000"
 APP_MODULE="app.main:app"
 LOGFILE="./uvicorn.test.log"
@@ -12,7 +13,7 @@ START_SERVER=true
 
 # detect helpers
 command -v curl >/dev/null 2>&1 || { echo "curl is required"; exit 1; }
-command -v python >/dev/null 2>&1 || { echo "python is required"; exit 1; }
+command -v python3 >/dev/null 2>&1 || { echo "python is required"; exit 1; }
 
 if ! command -v jq >/dev/null 2>&1; then
   JQ_CMD=""
