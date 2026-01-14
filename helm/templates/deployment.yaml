@@ -25,6 +25,10 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }}
           env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://adot-collector.observability.svc.cluster.local:4317"       
+            - name: OTEL_SERVICE_NAME
+              value: "task-manager" 
 {{- toYaml .Values.env | nindent 12 }}
           resources:
 {{- toYaml .Values.resources | nindent 12 }}
