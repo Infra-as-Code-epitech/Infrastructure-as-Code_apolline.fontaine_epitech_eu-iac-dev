@@ -81,7 +81,7 @@ resource "kubernetes_manifest" "adot_instrumentation" {
     kind       = "Instrumentation"
     metadata = {
       name      = "adot-instrumentation"
-      namespace = "observability"
+      namespace = "app"
     }
     spec = {
       exporter = {
