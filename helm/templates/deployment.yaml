@@ -15,7 +15,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/name: {{ include "api.name" . }}
       annotations:
-        instrumentation.opentelemetry.io/inject-python: "true"
+        instrumentation.opentelemetry.io/inject-python: "observability/adot-instrumentation"
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
