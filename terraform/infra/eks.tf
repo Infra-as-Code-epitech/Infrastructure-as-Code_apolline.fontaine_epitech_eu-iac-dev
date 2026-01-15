@@ -156,9 +156,6 @@ module "eks-managed-node-group" {
     vpc-cni = {
       before_compute = true
     }
-    adot = {
-      most_recent = true
-    }
   }
 
   enable_cluster_creator_admin_permissions = true

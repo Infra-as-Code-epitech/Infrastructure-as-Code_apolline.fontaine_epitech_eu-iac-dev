@@ -1,3 +1,9 @@
+resource "aws_eks_addon" "adot-addon" {
+  cluster_name = module.eks-managed-node-group.cluster_name
+  addon_name   = "adot"
+  depends_on   = [helm_release.cert-manager]
+}
+
 resource "helm_release" "cert-manager" {
   name             = "cert-manager-${var.env}"
   repository       = "https://charts.jetstack.io"
