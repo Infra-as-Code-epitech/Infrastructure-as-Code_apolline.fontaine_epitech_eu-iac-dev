@@ -118,35 +118,11 @@ module "eks-managed-node-group" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
 
-  eks_managed_node_groups = {
-    app_node_group = {
-      instance_types = ["t3.small"]
-      ami_type       = "AL2023_x86_64_STANDARD"
-      min_size       = 1
-      max_size       = 5
-      desired_size   = 1
-      subnet_ids     = module.vpc.private_subnets
-      timeouts = {
-        create = "15m"
-        update = "15m"
-        delete = "20m"
-      }
-      iam_role_additional_policies = {
-        AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-      }
-    },
-    runners_node_group = {
-      instance_types = ["t3.small"]
-      ami_type       = "AL2023_x86_64_STANDARD"
-      min_size       = 1
-      max_size       = 5
-      desired_size   = 1
-      subnet_ids     = module.vpc.private_subnets
-      iam_role_additional_policies = {
-        AmazonEC2ContainerRegistryReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-      }
-    }
+  create_auto_mode_iam_resources = true
+  compute_config = {
+    enabled = true
   }
+
   addons = {
     coredns = {}
     eks-pod-identity-agent = {
