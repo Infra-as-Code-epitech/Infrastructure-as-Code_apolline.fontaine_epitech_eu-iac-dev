@@ -12,43 +12,57 @@ resource "kubernetes_service_account_v1" "adot" {
   depends_on = [kubernetes_namespace_v1.observability]
 }
 
-resource "kubernetes_cluster_role_v1" "adot_permissions" {
+resource "kubernetes_cluster_role_v1" "adot" {
   metadata {
-    name = "adot-collector-role"
+    name = "adot-collector"
   }
 
   rule {
     api_groups = [""]
-    resources  = ["pods", "nodes", "namespaces", "configmaps"]
-    verbs      = ["get", "list", "watch"]
-  }
-  rule {
-    api_groups = [""]
-    resources  = ["nodes/stats", "nodes/proxy"]
+    resources  = ["nodes", "nodes/proxy", "pods", "endpoints", "services"]
     verbs      = ["get", "list", "watch"]
   }
 
-  depends_on = [kubernetes_service_account_v1.adot]
+  rule {
+    api_groups = ["apps"]
+    resources  = ["deployments", "daemonsets", "replicasets", "statefulsets"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = ["batch"]
+    resources  = ["jobs", "cronjobs"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = ["autoscaling"]
+    resources  = ["horizontalpodautoscalers"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  rule {
+    non_resource_urls = ["/metrics"]
+    verbs             = ["get"]
+  }
 }
 
-resource "kubernetes_cluster_role_binding_v1" "adot_binding" {
+resource "kubernetes_cluster_role_binding_v1" "adot" {
   metadata {
-    name = "adot-collector-binding"
+    name = "adot-collector"
   }
 
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role_v1.adot_permissions.metadata[0].name
+    name      = kubernetes_cluster_role_v1.adot.metadata[0].name
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = "observability-sa"
-    namespace = "observability"
+    name      = kubernetes_service_account_v1.adot.metadata[0].name
+    namespace = kubernetes_service_account_v1.adot.metadata[0].namespace
   }
-
-  depends_on = [kubernetes_service_account_v1.adot]
 }
 
 resource "kubernetes_manifest" "adot_collector" {
@@ -73,35 +87,4 @@ resource "kubernetes_manifest" "adot_collector" {
     kubernetes_namespace_v1.observability,
     kubernetes_service_account_v1.adot
   ]
-}
-
-resource "kubernetes_manifest" "adot_instrumentation" {
-  manifest = {
-    apiVersion = "opentelemetry.io/v1alpha1"
-    kind       = "Instrumentation"
-    metadata = {
-      name      = "adot-instrumentation"
-      namespace = "app"
-    }
-    spec = {
-      exporter = {
-        endpoint = "http://adot-collector.observability.svc.cluster.local:4317"
-      }
-      propagators = ["tracecontext", "baggage", "b3"]
-      sampler = {
-        type     = "parentbased_traceidratio"
-        argument = "1"
-      }
-      python = {
-        env = [
-          {
-            name  = "OTEL_PYTHON_LOG_CORRELATION"
-            value = "true"
-          }
-        ]
-      }
-    }
-  }
-
-  depends_on = [kubernetes_namespace_v1.observability]
 }
