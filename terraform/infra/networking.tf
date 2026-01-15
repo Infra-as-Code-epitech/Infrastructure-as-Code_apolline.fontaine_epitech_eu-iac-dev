@@ -26,11 +26,3 @@ module "vpc" {
   })
 }
 
-resource "aws_lb" "alb" {
-  name                       = "load-balancer"
-  internal                   = false
-  load_balancer_type         = "application"
-  subnets                    = module.vpc.public_subnets
-  enable_deletion_protection = false
-  tags                       = var.tags
-}
