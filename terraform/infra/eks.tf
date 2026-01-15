@@ -156,6 +156,7 @@ module "eks-managed-node-group" {
     vpc-cni = {
       before_compute = true
     }
+    metrics-server = {}
   }
 
   enable_cluster_creator_admin_permissions = true
