@@ -24,6 +24,12 @@ env:
       secretKeyRef:
         name: db-credentials
         key: DATABASE_URL
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: "http://adot-collector.observability.svc.cluster.local:4317"
+  - name: OTEL_PYTHON_LOG_CORRELATION
+    value: "true"
+  - name: OTEL_SERVICE_NAME
+    value: "true"
 
 serviceAccount:
   create: true
