@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - dev
+    paths-ignore:
+      - ".github/workflows/**"
 
 permissions:
   id-token: write
@@ -47,7 +49,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./terraform/infra
-        run: terraform init -backend-config=${{ env.ENVIRONMENT }}.config #-upgrade
+        run: terraform init -backend-config=${{ env.ENVIRONMENT }}.config
 
       - name: Terraform Format
         working-directory: ./terraform/infra
