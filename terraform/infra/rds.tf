@@ -25,7 +25,6 @@ resource "aws_security_group" "rds" {
   vpc_id      = module.vpc.vpc_id
 }
 
-# Permettre l'accès depuis les nodes EKS (node security group)
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   security_group_id            = aws_security_group.rds.id
   from_port                    = 5432
@@ -34,13 +33,28 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   referenced_security_group_id = module.eks-managed-node-group.node_security_group_id
 }
 
-# Permettre l'accès depuis le cluster EKS (cluster security group - utilisé par Auto Mode)
 resource "aws_vpc_security_group_ingress_rule" "allow_from_cluster_sg" {
   security_group_id            = aws_security_group.rds.id
   from_port                    = 5432
   ip_protocol                  = "tcp"
   to_port                      = 5432
   referenced_security_group_id = module.eks-managed-node-group.cluster_security_group_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_from_cluster_primary_sg" {
+  security_group_id            = aws_security_group.rds.id
+  from_port                    = 5432
+  ip_protocol                  = "tcp"
+  to_port                      = 5432
+  referenced_security_group_id = module.eks-managed-node-group.cluster_primary_security_group_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_from_vpc" {
+  security_group_id = aws_security_group.rds.id
+  from_port         = 5432
+  ip_protocol       = "tcp"
+  to_port           = 5432
+  cidr_ipv4         = module.vpc.vpc_cidr_block
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_rds" {
