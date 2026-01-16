@@ -60,6 +60,11 @@ resource "aws_iam_role" "eks_pod_identity_app" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "eks_cluster_admin_app" {
+  role       = aws_iam_role.eks_pod_identity_app.name
+  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+}
+
 resource "aws_eks_pod_identity_association" "pod_identity_association_app" {
   cluster_name    = module.eks-managed-node-group.cluster_name
   namespace       = "app"
@@ -118,10 +123,12 @@ module "eks-managed-node-group" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
 
-  create_auto_mode_iam_resources = true
-  compute_config = {
-    enabled = true
+  cluster_compute_config = {
+    enabled    = true
+    node_pools = ["general-purpose", "system"]
   }
+
+  enable_auto_mode_custom_tags = true
 
   addons = {
     coredns = {}

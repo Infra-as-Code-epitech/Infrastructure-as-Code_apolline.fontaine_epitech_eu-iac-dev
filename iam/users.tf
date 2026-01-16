@@ -12,9 +12,9 @@ locals {
 resource "aws_iam_user" "users" {
   for_each = local.iam_users
   name     = each.key
-  
+
   tags = {
-    Role = each.value
+    Role      = each.value
     ManagedBy = "Terraform"
   }
 }
@@ -46,7 +46,7 @@ resource "aws_iam_user_policy_attachment" "billing_attach" {
 resource "local_file" "credentials_file" {
   filename = "aws-credentials.txt"
   content  = join("\n\n", [for username, key in aws_iam_access_key.keys : "[${username}]\naws_access_key_id = ${key.id}\naws_secret_access_key = ${key.secret}"])
-  
+
   # Permissions restreintes
   file_permission = "0600"
 }
@@ -55,10 +55,10 @@ resource "local_file" "credentials_file" {
 output "user_access_keys" {
   value = {
     for username, key in aws_iam_access_key.keys : username => {
-      access_key_id = key.id
+      access_key_id     = key.id
       secret_access_key = key.secret
     }
   }
-  sensitive = true
+  sensitive   = true
   description = "Access keys pour les nouveaux utilisateurs (sensible)"
 }
