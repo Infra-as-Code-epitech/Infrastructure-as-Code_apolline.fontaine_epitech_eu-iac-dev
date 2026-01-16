@@ -16,7 +16,9 @@ loadBalancer:
   type: LoadBalancer
   port: 80
   targetPort: 8000
-  annotations: {}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 
 env:
   - name: DATABASE_URL
