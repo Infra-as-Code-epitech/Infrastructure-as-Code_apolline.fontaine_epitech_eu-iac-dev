@@ -123,12 +123,10 @@ module "eks-managed-node-group" {
   vpc_id             = module.vpc.vpc_id
   subnet_ids         = module.vpc.private_subnets
 
-  cluster_compute_config = {
+  compute_config = {
     enabled    = true
     node_pools = ["general-purpose", "system"]
   }
-
-  enable_auto_mode_custom_tags = true
 
   addons = {
     coredns = {}
