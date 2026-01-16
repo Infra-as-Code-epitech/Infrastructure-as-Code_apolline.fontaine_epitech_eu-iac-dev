@@ -150,7 +150,14 @@ module "eks-managed-node-group" {
     vpc-cni = {
       before_compute = true
     }
-    metrics-server = {}
+    metrics-server = {
+      configuration_values = jsonencode({
+        args = [
+          "--kubelet-insecure-tls",
+          "--kubelet-preferred-address-types=InternalIP"
+        ]
+      })
+    }
   }
 
   enable_cluster_creator_admin_permissions = true
