@@ -22,22 +22,26 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.service.targetPort }}
+          {{- if .Values.livenessProbe }}
           livenessProbe:
             httpGet:
-              path: /health
-              port: 8000
-            initialDelaySeconds: 30
-            periodSeconds: 10
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             timeoutSeconds: 5
             failureThreshold: 3
+          {{- end }}
+          {{- if .Values.readinessProbe }}
           readinessProbe:
             httpGet:
-              path: /ready
-              port: 8000
-            initialDelaySeconds: 5
-            periodSeconds: 5
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: 5
-            failureThreshold: 2
+            failureThreshold: 3
+          {{- end }}
           env:
 {{- toYaml .Values.env | nindent 12 }}
           resources:
