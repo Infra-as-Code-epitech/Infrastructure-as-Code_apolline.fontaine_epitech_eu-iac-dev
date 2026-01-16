@@ -20,9 +20,13 @@ Base = declarative_base()
 
 
 def init_db():
-    logger.info("Creating DB tables (if not present)")
-    Base.metadata.create_all(bind=engine)
-    logger.info("DB tables created/ensured")
+    """Initialize database tables - handles existing tables gracefully"""
+    try:
+        logger.info("Creating DB tables (if not present)")
+        Base.metadata.create_all(bind=engine, checkfirst=True)
+        logger.info("DB tables created/ensured")
+    except Exception as e:
+        logger.warning(f"DB initialization warning (tables may already exist): {e}")
 
 
 class Tasks(Base):

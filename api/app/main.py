@@ -114,10 +114,12 @@ async def add_trace_context_middleware(request: Request, call_next):
         span.set_attribute("http.status_code", response.status_code)
         return response
 
-# Create the database tables
-logger.info("Creating database tables if they do not exist")
-Base.metadata.create_all(bind=engine)
-logger.info("Database tables ensured/created")
+try:
+    logger.info("Creating database tables if they do not exist")
+    Base.metadata.create_all(bind=engine, checkfirst=True)
+    logger.info("Database tables ensured/created")
+except Exception as e:
+    logger.warning(f"DB table creation warning (may already exist): {e}")
 
 # Include the todo routes
 app.include_router(todo_router)
