@@ -60,9 +60,22 @@ resource "aws_iam_role" "eks_pod_identity_app" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cluster_admin_app" {
-  role       = aws_iam_role.eks_pod_identity_app.name
-  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+resource "aws_eks_access_entry" "app" {
+  cluster_name  = module.eks-managed-node-group.cluster_name
+  principal_arn = aws_iam_role.eks_pod_identity_app.arn
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "app_cluster_admin" {
+  cluster_name  = module.eks-managed-node-group.cluster_name
+  principal_arn = aws_iam_role.eks_pod_identity_app.arn
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
+  }
+
+  depends_on = [aws_eks_access_entry.app]
 }
 
 resource "aws_eks_pod_identity_association" "pod_identity_association_app" {
